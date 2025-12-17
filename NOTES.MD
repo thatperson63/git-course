@@ -25,3 +25,15 @@ PS*: to delete certain file in our git repos, firstly, you have to delete your f
 
 git clone <url address> -> to clone git repos
 ls -a -> to show up all of type of files, including hidden file.
+git branch -M main -> got main branch which previously you need to do "git init" first
+
+PS*: after above git command, we need to create remote repos, but the problem is how will you connect your local
+     repos to the remote repos? that's a big issue.
+     now basically there are two optons one is HTTPS and one is SSH.
+     so first of all, when we use HTTPS, basically to push, how do i know that who should be allowed?
+     now thats where when we use HTTPS, it will ask you to login. 
+     otherwise, you can use SSH, the problem with login is you have to login every time.
+     what if you can set up your machine once with a key and then every time you do something,
+     it will automatically detect who you are. and thats why you have to setup the SSH.
+     in order do this, can be used "ssh-keygen -o" and when you enter it will be generating private/public keys
+     
