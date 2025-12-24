@@ -76,17 +76,10 @@ Later:
 # git pull                   # pulls from origin/main
 
 If you forgot -u, You can set it later:
-Option A: push and set upstream in one go
-# git push -u origin main
-Option B: explicitly set the upstream without pushing
-# git branch --set-upstream-to=origin/main main
-
--u is the same as --set-upstream. They’re synonyms:
-# git push --set-upstream origin feature/login
-
-A note on push.default
-Git has a config that affects behavior without upstream:
-# git config --global push.default simple
+# git push -u origin main -> Option A: push and set upstream in one go
+# git branch --set-upstream-to=origin/main main -> Option B: explicitly set the upstream without pushing
+# git push --set-upstream origin feature/login -> -u is the same as --set-upstream. in this case, they’re kinda synonyms
+# git config --global push.default simple -> config that affects behavior without upstream:
 
 simple (default):
 -> pushes the current branch to the same-named branch on the upstream remote only if upstream is set; otherwise it complains.
@@ -95,6 +88,24 @@ Other modes:
 -> upstream: pushes to the configured upstream only.
 -> matching: pushes all branches with matching names (legacy; be careful).
 
-You can check your upstream/tracking:
-# git branch -vv
+# git branch -vv -> check your upstream/tracking
 
+PS*: speaking of origin from git push. when we talked about the remote server, we only have one.
+# git remote -v -> this is the command in which you can see which is your origin.
+                   origin  git@github.com:thatperson63/git-course.git (fetch) -> from server to the client
+                   origin  git@github.com:thatperson63/git-course.git (push) -> from client to the server
+                   for fetch and push, we have the same link cuz we only have one remote repo there.
+                   by default the name is origin and you can change it as well.
+                   you can name it or you can connect to different repositories, not just one.
+                   you can pull and push to any other repositories if you want.
+
+PS*: there are two options for tagging, one is annotated tagging or you can use lightweight tagging.
+     1. annotated tagging is if you really want to release this to the users and if you want to give
+        more information about the user, or who is committing it or who owns it.
+        used for official releases or when you need history and verification.
+   # git tag -a v1.0 -m "Release version 1.0" -> sample of annotated tagging
+     2. lightweight is basically a pointer to a specific commit.
+        used for quick internal markers or temporary references.
+   # git tag v1.0 -> sample of lightweight tagging
+# git tag -> this will give you the information of tag version.
+# git show v1.0 -> this will give you description about this particular tag.
