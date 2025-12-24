@@ -107,7 +107,11 @@ PS*: there are two options for tagging, one is annotated tagging or you can use 
      2. lightweight is basically a pointer to a specific commit.
         used for quick internal markers or temporary references.
    # git tag v1.0 -> sample of lightweight tagging
-# git tag -> this will give you the information of tag version.
-# git show v1.0 -> this will give you description about this particular tag.
+# git tag -> this will give you the information of tag version
+# git show v1.0 -> this will give you description about this particular tag
 # git push origin v1.0 -> this will push your code from local to the cloud 
-# git push -u origin v1.2
+# git log --pretty=oneline -> this will gives you to see the commits and the message there
+                              also will get an example by looking at other's people commit
+                              like how they message something. we can see also some numbers,
+                              issue numbers, and upgrade numbers
+# git clone <copy the repo via SSH/HTTPS> -> to clone repo from server to the client side
