@@ -132,3 +132,5 @@ Date:   Thu Jan 22 10:40:29 2026 +0700
 
     added the improvement from feature1 branch
 # git merge feature2: merging the changes made by feature2 to the current branch
+
+a
