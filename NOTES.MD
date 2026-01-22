@@ -179,7 +179,6 @@ Open the conflicted file and look for conflict markers:
 ```
 <<<<<< HEAD
 (content from base branch)
-=======
 (content from your feature branch)
 >>>>>> feature1
 ```
@@ -294,3 +293,6 @@ git checkout -b feature1 feature1-backup
 - **Golden Rule**: Never rebase commits that have been pushed to a shared/public repository
 - **Best Practice**: Use rebase for local cleanup, merge for integrating shared work
 - **Safety tip**: Create backup branches before rebasing important work
+=======
+
+a
