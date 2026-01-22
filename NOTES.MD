@@ -119,6 +119,7 @@ PS*: there are two options for tagging, one is annotated tagging or you can use 
 # git checkout -b feature1: create new branch (-b / --branch)
 # git switch -c feature1: create new branch (-c / --create)
 # git branch: check how many branch did you have
+# git branch <branch name>: create new branch
 # git branch --all: to check the remote branch as well
 # git branch -: shortcut to get back to the previous branch ("-" here is to go back to the previous branch)
 # git branch -d <branch name>: to delete the branch
@@ -132,3 +133,7 @@ Date:   Thu Jan 22 10:40:29 2026 +0700
 
     added the improvement from feature1 branch
 # git merge feature2: merging the changes made by feature2 to the current branch
+PS*:
+Normally, whenever you do this merging and pushing on the remote repository, of course you have to push right? The first thing you do is you pull your remote repository. We have not done that because it was safe for me. Because we dont have any collaborators. I am not working on mean separately, but thats good idea. Always try to pull first!!!
+Because when you say pull, so from the remote repository, you will get the updated code on your machine before merging.
+# git log --graph: to see log based on graph
