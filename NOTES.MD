@@ -139,4 +139,158 @@ Because when you say pull, so from the remote repository, you will get the updat
 # git log --graph: to see log based on graph
 # git checkout -b feature 1: create new branch (-b / --branch)
 # git branch: check how many branch did you have
-# 
+PS*:
+lets say we have 4 branch as such main, feature1, feature2, feature3.
+then we wanted to make those branches into one line.
+this is a difference between merge and rebase.
+## Merge vs Rebase: Key Differences
+### git merge
+- Creates a new "merge commit" that combines the branches
+- Preserves the complete history of both branches
+- Results in a branching history graph (shows where branches diverged and merged)
+- Command: `git merge feature1`
+- **Use when**: You want to preserve the context of when branches were created and merged
+**History looks like:**
+```
+main:      A---B---C-------M (merge commit)
+                 \         /
+feature1:         D---E---F
+```
+### git rebase
+- Replays your commits on top of another branch
+- Creates a linear, straight-line history
+- Rewrites commit history (changes commit hashes)
+- Command: `git rebase main` (while on feature1)
+- **Use when**: You want a clean, linear history
+**History looks like:**
+```
+main:      A---B---C
+                    \
+feature1:            D'---E'---F' (commits rewritten)
+```
+## Handling Rebase Conflicts
+When you encounter conflicts during a rebase (like "CONFLICT (content): Merge conflict in NOTES.MD"):
+### Step 1: Check conflict status
+```bash
+git status
+```
+### Step 2: Resolve the conflict
+Open the conflicted file and look for conflict markers:
+```
+<<<<<< HEAD
+(content from base branch)
+=======
+(content from your feature branch)
+>>>>>> feature1
+```
+**Options:**
+- Keep HEAD content (base branch)
+- Keep your feature branch content
+- Combine both
+- Write new content
+Remove the markers (`<<<<<<<`, `=======`, `>>>>>>>`) after deciding.
+### Step 3: Mark as resolved
+```bash
+git add <conflicted-file>
+```
+### Step 4: Continue the rebase
+```bash
+git rebase --continue
+```
+### Alternative: Abort if needed
+```bash
+git rebase --abort  # Returns to state before rebase
+```
+**Note**: You may need to resolve conflicts for each commit during the rebase process.
+## Restoring Branches After Rebase
+### Understanding the Problem
+After rebasing, the branch pointer moves to the new rebased commits. The original commits still exist (temporarily) but are no longer referenced by the branch.
+**Before rebase:**
+```
+main:      A---B---C
+                 \
+feature1:         D---E---F
+```
+**After rebase:**
+```
+main:      A---B---C---D'---E'---F' (feature1 now points here)
+                 \
+                  D---E---F (orphaned commits, still in reflog)
+```
+### Method 1: Using git reflog (Recently rebased)
+Git keeps a reference log of where your branch pointers have been.
+```bash
+# View the reflog to find the commit before rebase
+git reflog feature1
+# Output example:
+# a1b2c3d feature1@{0}: rebase finished: returning to refs/heads/feature1
+# e4f5g6h feature1@{1}: checkout: moving from feature1 to main
+# e4f5g6h feature1@{2}: commit: last commit before rebase
+```
+```bash
+# Reset the branch to its original position
+git reset --hard feature1@{2}
+
+# Or use the specific commit hash
+git reset --hard e4f5g6h
+```
+### Method 2: Using ORIG_HEAD (Immediately after rebase)
+Git automatically stores the previous HEAD position in ORIG_HEAD.
+```bash
+# Immediately after rebase, restore the branch
+git reset --hard ORIG_HEAD
+```
+### Method 3: If you have the original commit hash
+If you noted the commit hash before rebasing:
+```bash
+# Reset to that specific commit
+git reset --hard <commit-hash>
+```
+### Method 4: Restoring from remote (If pushed before rebase)
+If the original branch was pushed to remote before rebasing:
+```bash
+# Fetch the remote state
+git fetch origin
+# Reset local branch to match remote
+git reset --hard origin/feature1
+```
+### Example: Restoring Multiple Branches
+If you rebased feature1, feature2, and feature3:
+```bash
+# For each branch
+git checkout feature1
+git reflog feature1
+git reset --hard feature1@{<number-before-rebase>}
+#
+git checkout feature2
+git reflog feature2
+git reset --hard feature2@{<number-before-rebase>}
+#
+git checkout feature3
+git reflog feature3
+git reset --hard feature3@{<number-before-rebase>}
+```
+### Important Notes
+- **Reflog entries expire**: By default, unreachable commits are kept for 30 days
+- **Local only**: Reflog is local to your repository; it doesn't sync with remote
+- **Act quickly**: The sooner you restore, the easier it is to find in reflog
+- **Force push warning**: If you already pushed the rebased commits, restoring will create divergent histories
+### Prevention: Create backup branches
+Before rebasing, create backup branches:
+```bash
+# Before rebasing feature1
+git branch feature1-backup
+# Now you can safely rebase
+git rebase main
+# If you need to restore
+git branch -D feature1
+git checkout -b feature1 feature1-backup
+```
+## Summary
+- **Merge**: Preserves history, creates merge commits, branching graph
+- **Rebase**: Rewrites history, creates linear timeline, cleaner but changes commits
+- **Conflicts**: Resolve manually, mark with `git add`, then continue
+- **Restore after rebase**: Use `git reflog` and `git reset --hard`
+- **Golden Rule**: Never rebase commits that have been pushed to a shared/public repository
+- **Best Practice**: Use rebase for local cleanup, merge for integrating shared work
+- **Safety tip**: Create backup branches before rebasing important work
