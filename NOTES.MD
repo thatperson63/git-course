@@ -119,4 +119,16 @@ PS*: there are two options for tagging, one is annotated tagging or you can use 
 # git checkout -b feature1: create new branch (-b / --branch)
 # git switch -c feature1: create new branch (-c / --create)
 # git branch: check how many branch did you have
-# 
+# git branch --all: to check the remote branch as well
+# git branch -: shortcut to get back to the previous branch ("-" here is to go back to the previous branch)
+# git branch -d <branch name>: to delete the branch
+PS*:
+everytime you basically do the commit, lets say when you do the first commit, what Git does is, it creates something called a snapshot. So it will take a snapshot of your files, right? And then it will give it its own commit number. Thats your checksum basically. We have seen the hexacode values, right? so thats your checksum. And then there's one more thing called pointer.
+For example: when we typed "git log"
+#git log
+commit f999bd77e14d1c10c0a28cd628591e666cd008c1 (HEAD -> feature2, origin/main, main)
+Author: Ryan Maulana <ryan.maulana@lge.com>
+Date:   Thu Jan 22 10:40:29 2026 +0700
+
+    added the improvement from feature1 branch
+
