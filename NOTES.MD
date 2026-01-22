@@ -115,3 +115,7 @@ PS*: there are two options for tagging, one is annotated tagging or you can use 
                               like how they message something. we can see also some numbers,
                               issue numbers, and upgrade numbers
 # git clone <copy the repo via SSH/HTTPS> -> to clone repo from server to the client side
+# git checkout is older version and the new one is git switch.
+# git checkout -b feature 1: create new branch (-b / --branch)
+# git branch: check how many branch did you have
+# 
