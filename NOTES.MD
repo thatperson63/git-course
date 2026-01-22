@@ -137,5 +137,7 @@ PS*:
 Normally, whenever you do this merging and pushing on the remote repository, of course you have to push right? The first thing you do is you pull your remote repository. We have not done that because it was safe for me. Because we dont have any collaborators. I am not working on mean separately, but thats good idea. Always try to pull first!!!
 Because when you say pull, so from the remote repository, you will get the updated code on your machine before merging.
 # git log --graph: to see log based on graph
-
-a
+# git checkout is older version and the new one is git switch.
+# git checkout -b feature 1: create new branch (-b / --branch)
+# git branch: check how many branch did you have
+# 
