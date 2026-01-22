@@ -407,6 +407,175 @@ main:      D'---E'---F'---A'---B'---C'
 - **Merge INTO main** - brings feature work into the main branch
 - **Rebase feature ON main** - updates your feature with latest main changes
 
+## Deleting Branches: -d vs -D
+
+### Understanding the Error
+When trying to delete a branch with unmerged commits:
+```
+warning: not deleting branch 'feature2' that is not yet merged to 'refs/heads/origin/main'
+error: the branch 'feature2' is not fully merged
+```
+
+This happens because Git is protecting you from losing work.
+
+### `-d` (lowercase) - Safe Delete
+```bash
+git branch -d feature2
+```
+
+**Characteristics:**
+- **Safety check enabled**: Git refuses to delete if branch has unmerged commits
+- **Protection mode**: Prevents accidental loss of work
+- **Equivalent to**: `git branch --delete`
+
+**When it works:**
+- ✅ Branch has been fully merged into HEAD (current branch)
+- ✅ Branch has been fully merged into upstream (if tracking remote)
+- ❌ Fails if branch has unmerged work (shows error like above)
+
+**Use when:**
+- You want Git to verify the branch is merged before deleting
+- You're not 100% sure if the work has been integrated
+- You want to be safe and avoid mistakes
+
+### `-D` (uppercase) - Force Delete
+```bash
+git branch -D feature2
+```
+
+**Characteristics:**
+- **No safety checks**: Deletes branch regardless of merge status
+- **Destructive**: Can lose commits if they're not merged anywhere
+- **Equivalent to**: `git branch --delete --force`
+
+**When it works:**
+- ✅ Always works (unless branch doesn't exist)
+- ⚠️ Will delete even if work is unmerged
+- ⚠️ Commits may become orphaned and eventually garbage collected
+
+**Use when:**
+- You're absolutely certain you don't need the branch
+- It's an experimental branch you want to discard
+- You've already merged the work elsewhere
+
+### Visual Example
+
+**Scenario:**
+```
+main:      A---B---C
+                 \
+feature2:         D---E (unmerged commits)
+```
+```bash
+# This will FAIL with safety error
+git branch -d feature2
+# Error: branch 'feature2' is not fully merged
+
+# This will SUCCEED but commits D and E become orphaned
+git branch -D feature2
+# Deleted branch feature2 (was a1b2c3d)
+```
+
+### Comparison Table
+
+| Feature | `-d` (safe) | `-D` (force) |
+|---------|-------------|--------------|
+| Safety check | Yes | No |
+| Deletes merged branches | Yes | Yes |
+| Deletes unmerged branches | No (shows error) | Yes |
+| Risk of data loss | Low | High |
+| Requires confirmation | Implicit (via merge check) | No |
+| Use case | Standard cleanup | Discarding unwanted work |
+
+### How to Fix the "not fully merged" Error
+
+**Option 1: Merge first, then delete (Recommended if you want the work)**
+```bash
+# Switch to main
+git checkout main
+
+# Merge feature2 into main
+git merge feature2
+
+# Now safe delete will work
+git branch -d feature2
+```
+
+**Option 2: Check what will be lost**
+```bash
+# See commits in feature2 that aren't in main
+git log main..feature2
+
+# View graphical representation
+git log --oneline --graph --all
+```
+
+**Option 3: Force delete if you don't need it**
+```bash
+# Delete without merging (loses commits D and E)
+git branch -D feature2
+```
+
+**Option 4: Archive instead of delete**
+```bash
+# Create a backup tag
+git tag archive/feature2 feature2
+
+# Now force delete
+git branch -D feature2
+
+# Later, if needed, restore from tag
+git checkout -b feature2 archive/feature2
+```
+
+### Decision Tree
+```
+Do you need the changes from the branch?
+│
+├─ YES → Merge it first
+│         git checkout main
+│         git merge feature2
+│         git branch -d feature2
+│
+├─ NOT SURE → Check commits first
+│              git log main..feature2
+│              (then decide)
+│
+└─ NO → Force delete
+        git branch -D feature2
+```
+
+### Safety Best Practice
+
+If uncertain, create a safety backup before force deleting:
+```bash
+# 1. Create backup tag
+git tag backup-feature2 feature2
+
+# 2. Force delete the branch
+git branch -D feature2
+
+# 3. If you need it back later
+git checkout -b feature2-restored backup-feature2
+
+# 4. Clean up backup tag when sure you don't need it
+git tag -d backup-feature2
+```
+
+### Summary of -d vs -D
+
+- **`-d`** = "Delete only if safe" (protective parent mode 👨‍👧)
+  - Checks if merged
+  - Prevents accidental data loss
+  - Best for normal workflow cleanup
+
+- **`-D`** = "Delete no matter what" (YOLO mode 🚀)
+  - No safety checks
+  - Can lose unmerged commits
+  - Best for discarding experimental work
+
+**Golden Rule**: When in doubt, use `-d` first. If Git complains, investigate why before using `-D`.
+
 ## Summary
 - **Merge**: Preserves history, creates merge commits, branching graph
 - **Rebase**: Rewrites history, creates linear timeline, cleaner but changes commits
@@ -414,6 +583,7 @@ main:      D'---E'---F'---A'---B'---C'
 - **Restore after rebase**: Use `git reflog` and `git reset --hard`
 - **Updating main**: Always use `git merge` to bring in feature changes
 - **Updating feature**: Use `git rebase` to sync with main changes
+- **Deleting branches**: Use `-d` for safety, `-D` only when certain
 - **Golden Rule**: Never rebase commits that have been pushed to a shared/public repository
 - **Best Practice**: Use rebase for local cleanup, merge for integrating shared work
 - **Safety tip**: Create backup branches before rebasing important work
