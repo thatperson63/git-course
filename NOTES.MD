@@ -816,3 +816,9 @@ git push origin <commit-hash>:refs/heads/feature1
 - **Golden Rule**: Never rebase commits that have been pushed to a shared/public repository
 - **Best Practice**: Use rebase for local cleanup, merge for integrating shared work
 - **Safety tip**: Create backup branches/tags before deleting important work
+
+PS*:
+When we get Merge Conflict as such basically, it's trying to merge, but then there's one conflict in this particular file, say, make the changes and then commit once again. So now, Git actually helping you here. So depend upon which editor you are using, since we are using VSCode, we get this option. Otherwise, if you are using a command line, you can simply say:
+# git diff --> and you can check the differences between these two.
+So you can say git diff from feature3, so it will tell you what are the changes you have made and then you can do the changes according to it.
+So you can see when you say diff, everything is good till this point, the first two lines, because we are adding new files now.
