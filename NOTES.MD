@@ -834,4 +834,14 @@ To-Be:
 change 2 in harsh's database
 
 Now you have finalized which one you want to go for. The merge conflict is actually complete. So the only thing is since you have done some changes, you have to do the commit.
-git add . --> git commit --> 
+git add . --> git commit --> now its clean if you say git status
+
+In a nuthsell, so when you try to merge two branhces with different commits and if you have done the commits in the same file, you might get merge conflict. So how do we do that? So when you try to merge, it will open a file, because it was mention, "Hey, there's something wrong here, just decide which you want to go for, and then save it and then commit it." This can be also happen with the help of rebase and also pull.
+We have not done the push to server yet, right?
+Above code is our local one, and if you go back to your Github repository, so you can see if I go to adminService, we dont have those things here. So what I will do is I'll manually make the changes, I'll say git push origin main, and we're trying to push the same code, so that it will be available on GitHub as well. After refresh the GitHub page, so now we've got the new changes.
+So when we're doing a commit changes on the remote repository, not on the local repository. Now if you go back to your local copy, it still says no changes. So how do you get the changes from the server to client?
+So when you want to change the remote repository from the local one, you say push. Now we are pulling right?
+So we want to pull it from the remote repository. So you can say "git pull origin main"
+Another case is when you see there is a merge conflict. So its trying to pull, it says you have a divergent branches, need to specify how to reconcile them. You can do by running the following commands. So when you try to pull, its basically asking what you want to achieve. Do you want to go for a merge or a rebase? So what I will do is I will say merge, and that's it. And now lets try to pull.
+Actually, whats happening is when you try to pull, and since we have different commits, it will says, "Okay, you have different commits. Either you have to go to for merge or you have to go to for rebase, so please specify that."
+So by doing this, I mentioned that I want to go for merge. So when you say rebase false, that is merge. When you say rebase true, that is rebase, right?
