@@ -818,7 +818,20 @@ git push origin <commit-hash>:refs/heads/feature1
 - **Safety tip**: Create backup branches/tags before deleting important work
 
 PS*:
-When we get Merge Conflict as such basically, it's trying to merge, but then there's one conflict in this particular file, say, make the changes and then commit once again. So now, Git actually helping you here. So depend upon which editor you are using, since we are using VSCode, we get this option. Otherwise, if you are using a command line, you can simply say:
-# git diff --> and you can check the differences between these two.
+When we get Merge Conflict as such basically, it's trying to merge, but then there's one conflict in this particular file, it says, make the changes and then commit once again. So now, Git actually helping you here (in terminal). So depend upon which editor you are using, since we are using VSCode, we get this option. Otherwise, if you are using a command line, you can simply say:
+# git diff <branch name> --> and you can check the differences between these two.
 So you can say git diff from feature3, so it will tell you what are the changes you have made and then you can do the changes according to it.
-So you can see when you say diff, everything is good till this point, the first two lines, because we are adding new files now.
+So you can see when you say diff, everything is good till this point, the first two lines, because we are adding new files now. And that too, it is in different file. So Git says there are two files, A and B. Inside this, there's little problem, everything is good till closing the connection. But after that, when you say changed 1, it looks good because they are same. But when you go to change 2, thats where in one file we have commit1 (harsh) database, in one file you have in commit2 (my) database.
+So you have to choose between these two. Manually, you can go to a file, and you can make the changes.
+Now how do we select one? And thats where you have to connect with your team, you have to connect with the person who have committed this. And discuss, like "Hey, you know, which one we should go for?" and then you decide to go for commit1 database. because we're being very specific, we're going for harsh's database. Now this can be any database or any thing.
+Now we have to remove below code lines:
+As-Is:
+<<<<<<< HEAD
+=======
+change 2 in harsh's database
+>>>>>>> feature3
+To-Be:
+change 2 in harsh's database
+
+Now you have finalized which one you want to go for. The merge conflict is actually complete. So the only thing is since you have done some changes, you have to do the commit.
+git add . --> git commit --> 
