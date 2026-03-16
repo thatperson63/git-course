@@ -132,6 +132,15 @@ git push -u origin main                      # Option A: push and set upstream
 git branch --set-upstream-to=origin/main main  # Option B: set without pushing
 ```
 
+### Fresh Local Repo
+
+```bash
+# If this is a fresh local repo with no commits yet, you might get an error. In that case, use:
+git pull origin main --allow-unrelated-histories
+
+# This flag is needed when your local and remote repos have unrelated commit histories (e.g., you initialized locally with git init and the remote already has commits like a README).
+```
+
 ---
 
 ## Cloning
